@@ -24,7 +24,15 @@ class UserController extends Controller
 
         $users = $query->orderByDesc('created_at')->paginate(15)->withQueryString();
 
-        return response()->json(['data' => $users]);
+        return response()->json([
+            'data' => $users->items(),
+            'meta' => [
+                'current_page' => $users->currentPage(),
+                'last_page' => $users->lastPage(),
+                'per_page' => $users->perPage(),
+                'total' => $users->total(),
+            ],
+        ]);
     }
 
     public function updateRole(Request $request, User $user): JsonResponse

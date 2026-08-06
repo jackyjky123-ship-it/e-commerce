@@ -48,8 +48,8 @@ export function AdminOrdersPage() {
     api
       .get("/admin/orders", { params: { page, status: status || undefined, search: search || undefined } })
       .then(({ data }) => {
-        setOrders(data.data.data)
-        setMeta(data.data.meta)
+        setOrders(data.data)
+        setMeta(data.meta)
       })
       .finally(() => setLoading(false))
   }, [page, status, search])

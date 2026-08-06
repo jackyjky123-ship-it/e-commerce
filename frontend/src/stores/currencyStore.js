@@ -1,0 +1,17 @@
+import { create } from "zustand"
+import { persist } from "zustand/middleware"
+
+export const USD_TO_KHR = 4034
+
+export const useCurrencyStore = create(
+  persist(
+    (set) => ({
+      currency: "USD",
+      setCurrency: (currency) => set({ currency }),
+    }),
+    {
+      name: "currency-storage",
+      partialize: (state) => ({ currency: state.currency }),
+    }
+  )
+)

@@ -5,17 +5,27 @@ export function cn(...inputs) {
   return twMerge(clsx(inputs))
 }
 
-export function formatCurrency(value) {
-  return new Intl.NumberFormat("en-PH", {
+import { useCurrencyStore, USD_TO_KHR } from "@/stores/currencyStore"
+
+export function formatCurrency(value, currency = useCurrencyStore.getState().currency) {
+  const amount = Number(value || 0)
+  if (currency === "KHR") {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "KHR",
+      maximumFractionDigits: 0,
+    }).format(amount * USD_TO_KHR)
+  }
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "PHP",
+    currency: "USD",
     minimumFractionDigits: 2,
-  }).format(Number(value || 0))
+  }).format(amount)
 }
 
 export function formatDate(value) {
   if (!value) return "—"
-  return new Date(value).toLocaleDateString("en-PH", {
+  return new Date(value).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -24,7 +34,7 @@ export function formatDate(value) {
 
 export function formatDateTime(value) {
   if (!value) return "—"
-  return new Date(value).toLocaleString("en-PH", {
+  return new Date(value).toLocaleString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",

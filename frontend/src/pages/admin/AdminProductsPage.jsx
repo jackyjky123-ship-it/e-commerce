@@ -44,8 +44,8 @@ export function AdminProductsPage() {
     api
       .get("/admin/products", { params: { page, search: search || undefined } })
       .then(({ data }) => {
-        setProducts(data.data.data)
-        setMeta(data.data.meta)
+        setProducts(data.data)
+        setMeta(data.meta)
       })
       .finally(() => setLoading(false))
   }, [page, search])

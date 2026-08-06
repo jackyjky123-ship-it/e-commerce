@@ -22,8 +22,8 @@ export function OrdersPage() {
     api
       .get("/orders", { params: { page } })
       .then(({ data }) => {
-        setOrders(data.data.data)
-        setMeta(data.data.meta)
+        setOrders(data.data)
+        setMeta(data.meta)
       })
       .finally(() => setLoading(false))
   }, [page])

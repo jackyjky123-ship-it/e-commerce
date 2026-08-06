@@ -25,6 +25,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 import { useAuthStore, isAdmin } from "@/stores/authStore"
 import { useCartStore } from "@/stores/cartStore"
+import { useCurrencyStore } from "@/stores/currencyStore"
 
 const categories = [
   { code: "ELC", name: "Electronics", to: "/categories/electronics" },
@@ -49,6 +50,8 @@ export function Navbar() {
 
   const { user, logout } = useAuthStore()
   const cartCount = useCartStore((s) => s.count)
+  const currency = useCurrencyStore((s) => s.currency)
+  const setCurrency = useCurrencyStore((s) => s.setCurrency)
 
   const handleLogout = async () => {
     await logout()
@@ -137,6 +140,33 @@ export function Navbar() {
         </nav>
 
         <div className="ml-auto flex items-center gap-1">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="rounded-full px-3 text-[13px] font-bold text-muted-foreground hover:bg-accent/60 hover:text-foreground"
+                aria-label="Change currency"
+              >
+                {currency}
+                <ChevronDown className="ml-0.5 h-3.5 w-3.5 opacity-60" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-44 rounded-xl border p-1.5 shadow-lg">
+              <DropdownMenuItem
+                onClick={() => setCurrency("USD")}
+                className={`px-3 py-2 ${currency === "USD" ? "bg-accent font-bold text-primary" : ""}`}
+              >
+                USD — US Dollar
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setCurrency("KHR")}
+                className={`px-3 py-2 ${currency === "KHR" ? "bg-accent font-bold text-primary" : ""}`}
+              >
+                KHR — Cambodian Riel
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           {searchOpen ? (
             <form onSubmit={handleSearch} className="flex items-center gap-2">
               <Input

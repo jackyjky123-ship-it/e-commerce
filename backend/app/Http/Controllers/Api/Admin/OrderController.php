@@ -27,7 +27,15 @@ class OrderController extends Controller
 
         $orders = $query->orderByDesc('created_at')->paginate(15)->withQueryString();
 
-        return response()->json(['data' => $orders]);
+        return response()->json([
+            'data' => $orders->items(),
+            'meta' => [
+                'current_page' => $orders->currentPage(),
+                'last_page' => $orders->lastPage(),
+                'per_page' => $orders->perPage(),
+                'total' => $orders->total(),
+            ],
+        ]);
     }
 
     public function show(Order $order): JsonResponse

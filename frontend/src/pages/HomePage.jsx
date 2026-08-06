@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { ArrowRight, Package, RefreshCcw, ShieldCheck, Star, Truck } from "lucide-react"
+import { ArrowRight, CreditCard, Package, RefreshCcw, ShieldCheck, Star, Truck } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -17,10 +17,10 @@ const departments = [
 ]
 
 const trust = [
-  { icon: Truck, label: "Free shipping over ₱1,500" },
+  { icon: Truck, label: "Same-day dispatch" },
   { icon: RefreshCcw, label: "7-day easy returns" },
   { icon: ShieldCheck, label: "Secure checkout" },
-  { icon: Package, label: "Packed & shipped daily" },
+  { icon: CreditCard, label: "Card · GCash · COD" },
 ]
 
 export function HomePage() {
@@ -36,25 +36,45 @@ export function HomePage() {
 
   return (
     <div>
-      <section className="bg-gradient-to-br from-primary via-primary to-emerald-500 text-primary-foreground">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 lg:grid-cols-[1.05fr_1fr] lg:py-20">
-          <div className="flex flex-col justify-center gap-5">
-            <p className="text-rail inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-3 py-1 font-bold">
-              <span className="h-1.5 w-1.5 rounded-full bg-signal" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-emerald-500 text-primary-foreground">
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-50 dot-grid"
+        />
+        <div
+          aria-hidden
+          className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/10 blur-3xl"
+        />
+        <div
+          aria-hidden
+          className="absolute -bottom-32 -left-24 h-96 w-96 rounded-full bg-signal/20 blur-3xl"
+        />
+
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-14 lg:grid-cols-[1.05fr_1fr] lg:py-20">
+          <div className="flex flex-col gap-6">
+            <p className="text-rail inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-3 py-1 font-bold backdrop-blur">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-signal" />
               NEW ARRIVALS WEEKLY
             </p>
-            <h1 className="font-display text-[2.6rem] leading-[1.02] font-bold tracking-tight sm:text-6xl lg:text-[4rem]">
+            <h1 className="font-display text-[2.6rem] font-bold leading-[1.02] tracking-tight sm:text-6xl lg:text-[4rem]">
               Good stuff,
               <br />
               priced in{" "}
-              <span className="underline decoration-signal decoration-8 underline-offset-4">plain pesos.</span>
+              <span className="relative inline-block">
+                <span className="relative z-10">plain pesos.</span>
+                <span
+                  aria-hidden
+                  className="absolute inset-x-0 bottom-1 z-0 h-4 -rotate-1 rounded-sm bg-signal/90"
+                />
+              </span>
             </h1>
             <p className="max-w-lg text-lg text-primary-foreground/90">
               Electronics, fashion, home, and outdoor goods — tested, priced, and
               out the door the same day you order.
             </p>
-            <div className="flex flex-wrap gap-3">
-              <Button asChild size="lg" className="bg-card text-primary hover:bg-card/90">
+
+            <div className="flex flex-wrap items-center gap-3">
+              <Button asChild size="lg" className="bg-card text-primary shadow-lg transition-shadow hover:shadow-[0_8px_30px_rgba(255,255,255,0.35)] hover:bg-card/90">
                 <Link to="/shop">
                   Shop the catalog <ArrowRight />
                 </Link>
@@ -63,123 +83,147 @@ export function HomePage() {
                 <Link to="/deals">View deals</Link>
               </Button>
             </div>
+
+            {/* social proof strip */}
+            <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/15 pt-4">
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
+                <Star className="h-4 w-4 fill-warning text-warning" />
+                4.8 average rating
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
+                <Package className="h-4 w-4 text-white/80" />
+                2,000+ orders shipped
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
+                <Truck className="h-4 w-4 text-white/80" />
+                Same-day packing
+              </span>
+            </div>
           </div>
 
           <div className="relative">
-            <div
-              aria-hidden
-              className="absolute -inset-6 rounded-[2.5rem] opacity-60 [mask-image:linear-gradient(to_bottom,black,transparent_70%)] dot-grid"
-            />
-            <div
-              aria-hidden
-              className="absolute -right-12 -top-12 h-56 w-56 rounded-full bg-white/15 blur-3xl"
-            />
-            <div
-              aria-hidden
-              className="absolute -bottom-16 -left-12 h-64 w-64 rounded-full bg-signal/25 blur-3xl"
-            />
-
-            <div className="relative flex flex-col gap-6">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {loading ? (
-                <Skeleton className="aspect-[16/11] w-full rounded-3xl bg-white/20" />
+                <Skeleton className="aspect-[16/11] w-full rounded-3xl bg-white/20 sm:col-span-2 sm:aspect-[4/3] lg:col-span-2 lg:row-span-2 lg:aspect-auto lg:h-full" />
               ) : (
-                <div className="relative">
-                  {/* offset "peel" card behind the featured product */}
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 translate-x-4 translate-y-4 rounded-3xl bg-card/40 ring-1 ring-white/30"
+                <Link
+                  to={`/product/${featured[0]?.slug}`}
+                  className="group relative block aspect-[16/11] overflow-hidden rounded-3xl bg-card shadow-2xl ring-1 ring-white/40 transition-all duration-200 hover:-translate-y-1 sm:col-span-2 sm:aspect-[4/3] lg:col-span-2 lg:row-span-2 lg:aspect-auto lg:h-full"
+                >
+                  <img
+                    src={featured[0]?.primary_image_url || "/placeholder.svg"}
+                    alt={featured[0]?.name}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
 
-                  <Link
-                    to={`/product/${featured[0]?.slug}`}
-                    className="group relative -rotate-1 block aspect-[16/11] overflow-hidden rounded-3xl bg-card shadow-2xl ring-1 ring-white/40 transition-all duration-200 hover:rotate-0 hover:-translate-y-1"
-                  >
-                    <img
-                      src={featured[0]?.primary_image_url || "/placeholder.svg"}
-                      alt={featured[0]?.name}
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+                  {/* ribbon */}
+                  <span className="absolute left-0 top-5 rounded-r-full bg-card px-3 py-1.5 text-rail text-[10px] font-bold text-primary shadow-md">
+                    DEAL OF THE DAY
+                  </span>
 
-                    {featured[0]?.has_discount && (
-                      <div className="absolute left-4 top-4 flex -rotate-3 items-center gap-1 rounded-full bg-signal px-3 py-1 text-ticket text-xs text-white shadow-lg motion-reduce:animate-none animate-float">
-                        −{featured[0].discount_percent}% today
-                      </div>
-                    )}
-                    <span className="text-ticket absolute right-4 top-4 rounded-full bg-card/95 px-3 py-1.5 text-sm text-foreground shadow-xl">
-                      {formatCurrency(featured[0]?.price)}
-                    </span>
-
-                    <div className="absolute inset-x-0 bottom-0 p-5">
-                      <p className="text-rail text-[10px] font-bold tracking-widest text-white/80">
-                        FEATURED THIS WEEK
-                      </p>
-                      <div className="mt-1 flex items-end justify-between gap-3">
-                        <p className="truncate font-display text-xl font-bold text-white">
-                          {featured[0]?.name}
-                        </p>
-                        {featured[0]?.rating > 0 && (
-                          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-white/15 px-2.5 py-1 text-xs font-bold text-white ring-1 ring-white/25">
-                            <Star className="h-3.5 w-3.5 fill-warning text-warning" />
-                            {Number(featured[0].rating).toFixed(1)}
-                          </span>
-                        )}
-                      </div>
+                  {/* discount seal */}
+                  {featured[0]?.has_discount && (
+                    <div className="absolute right-4 top-4 flex h-20 w-20 -rotate-6 flex-col items-center justify-center rounded-full border-2 border-dashed border-white/70 bg-signal text-white shadow-xl motion-reduce:animate-none animate-float">
+                      <span className="text-ticket text-xl leading-none">−{featured[0].discount_percent}%</span>
+                      <span className="text-rail mt-0.5 text-[8px]">OFF</span>
                     </div>
-                  </Link>
-                </div>
-              )}
+                  )}
 
-              <div className="grid grid-cols-2 gap-4">
-                {[1, 2].map((i, idx) =>
-                  loading ? (
-                    <Skeleton key={i} className="aspect-square rounded-2xl bg-white/20" />
-                  ) : (
-                    <Link
-                      key={i}
-                      to={`/product/${featured[i]?.slug}`}
-                      className={`group relative overflow-hidden rounded-2xl bg-card/95 shadow-lg ring-1 ring-white/30 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl ${
-                        idx === 0 ? "rotate-1" : "-rotate-1"
-                      }`}
-                    >
-                      <img
-                        src={featured[i]?.primary_image_url || "/placeholder.svg"}
-                        alt={featured[i]?.name}
-                        className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                      {featured[i]?.has_discount && (
-                        <span className="absolute left-2 top-2 rounded-full bg-signal px-2 py-0.5 text-ticket text-[10px] text-white shadow-sm">
-                          −{featured[i].discount_percent}%
+                  <div className="absolute inset-x-0 bottom-0 p-6">
+                    <p className="truncate font-display text-2xl font-bold text-white">
+                      {featured[0]?.name}
+                    </p>
+                    <div className="mt-2 flex flex-wrap items-center gap-2.5">
+                      <span className="text-ticket text-3xl text-white">
+                        {formatCurrency(featured[0]?.price)}
+                      </span>
+                      {featured[0]?.old_price > featured[0]?.price && (
+                        <span className="text-sm text-white/60 line-through">
+                          {formatCurrency(featured[0].old_price)}
                         </span>
                       )}
-                      <div className="flex items-center justify-between gap-2 px-3 py-2">
-                        <span className="truncate text-[11px] font-semibold text-foreground">
-                          {featured[i]?.name}
+                      {featured[0]?.rating > 0 && (
+                        <span className="ml-auto inline-flex items-center gap-1 rounded-full bg-white/15 px-2.5 py-1 text-xs font-bold text-white ring-1 ring-white/25">
+                          <Star className="h-3.5 w-3.5 fill-warning text-warning" />
+                          {Number(featured[0].rating).toFixed(1)}
                         </span>
-                        <span className="text-ticket shrink-0 text-[11px] text-primary">
-                          {featured[i] ? formatCurrency(featured[i].price) : ""}
-                        </span>
-                      </div>
-                    </Link>
-                  )
-                )}
-              </div>
-
-              {/* straddling review sticker */}
-              <div className="absolute -right-3 -bottom-5 z-10 motion-reduce:animate-none animate-float">
-                <div className="flex items-center gap-2 rounded-2xl bg-card px-3.5 py-2 shadow-2xl ring-1 ring-border">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-warning text-white">
-                    <Star className="h-4 w-4 fill-current" />
-                  </span>
-                  <div className="leading-tight">
-                    <p className="text-[12px] font-bold text-foreground">Top rated</p>
-                    <p className="text-rail text-[9px] text-muted-foreground">
-                      {featured[0]?.rating ? Number(featured[0].rating).toFixed(1) : "4.8"} · 120+ orders
-                    </p>
+                      )}
+                    </div>
                   </div>
+                </Link>
+              )}
+
+              {loading ? (
+                <Skeleton className="aspect-[4/3] rounded-3xl bg-white/20" />
+              ) : (
+                <Link
+                  to={`/product/${featured[1]?.slug}`}
+                  className="group flex flex-col overflow-hidden rounded-3xl bg-card/95 shadow-xl ring-1 ring-white/30 transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl"
+                >
+                  <div className="relative overflow-hidden">
+                    <img
+                      src={featured[1]?.primary_image_url || "/placeholder.svg"}
+                      alt={featured[1]?.name}
+                      className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    {featured[1]?.has_discount && (
+                      <span className="absolute left-3 top-3 rounded-full bg-signal px-2 py-0.5 text-ticket text-[10px] text-white shadow-sm">
+                        −{featured[1].discount_percent}%
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col gap-1.5 p-4">
+                    <p className="text-rail text-[9px] font-bold text-primary">TOP RATED</p>
+                    <p className="truncate text-sm font-bold text-foreground">
+                      {featured[1]?.name}
+                    </p>
+                    <div className="mt-auto flex items-center justify-between gap-2 pt-2">
+                      <span className="text-ticket text-base font-bold text-primary">
+                        {featured[1] ? formatCurrency(featured[1].price) : ""}
+                      </span>
+                      {featured[1]?.rating > 0 && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-warning/15 px-2 py-0.5 text-[11px] font-bold text-warning">
+                          <Star className="h-3 w-3 fill-warning text-warning" />
+                          {Number(featured[1].rating).toFixed(1)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              )}
+
+              {/* deals CTA block */}
+              <Link
+                to="/deals"
+                className="group relative flex flex-col justify-between overflow-hidden rounded-3xl bg-signal p-5 text-white shadow-xl ring-1 ring-white/30 transition-all duration-200 hover:-translate-y-1 hover:shadow-2xl"
+              >
+                <span
+                  aria-hidden
+                  className="absolute -right-6 -top-8 h-28 w-28 rounded-full bg-white/10"
+                />
+                <div className="relative">
+                  <p className="text-rail text-[9px] font-bold text-white/80">LIMITED DEALS</p>
+                  <p className="font-display mt-2 text-2xl font-bold leading-tight">
+                    Up to −30% off this week
+                  </p>
                 </div>
+                <span className="relative mt-8 inline-flex items-center gap-1.5 text-sm font-bold">
+                  Visit the deals aisle
+                  <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                </span>
+              </Link>
+            </div>
+
+            {/* straddling free-shipping sticker */}
+            <div className="absolute -bottom-4 left-6 z-10 motion-reduce:animate-none animate-float">
+              <div className="flex items-center gap-2 rounded-full bg-ink py-2 pl-2 pr-4 text-primary-foreground shadow-2xl ring-1 ring-white/20">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary">
+                  <Truck className="h-4 w-4" />
+                </span>
+                <span className="text-[11px] font-bold">Free ship over ₱1,500</span>
               </div>
             </div>
           </div>

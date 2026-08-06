@@ -30,7 +30,15 @@ class ProductController extends Controller
 
         $products = $query->orderByDesc('created_at')->paginate(12)->withQueryString();
 
-        return response()->json(['data' => $products]);
+        return response()->json([
+            'data' => $products->items(),
+            'meta' => [
+                'current_page' => $products->currentPage(),
+                'last_page' => $products->lastPage(),
+                'per_page' => $products->perPage(),
+                'total' => $products->total(),
+            ],
+        ]);
     }
 
     public function store(Request $request): JsonResponse

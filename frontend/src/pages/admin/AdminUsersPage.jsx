@@ -46,8 +46,8 @@ export function AdminUsersPage() {
     api
       .get("/admin/users", { params: { page, search: search || undefined } })
       .then(({ data }) => {
-        setUsers(data.data.data)
-        setMeta(data.data.meta)
+        setUsers(data.data)
+        setMeta(data.meta)
       })
       .finally(() => setLoading(false))
   }, [page, search])
