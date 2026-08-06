@@ -1,46 +1,58 @@
-import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
-import { ArrowRight, CreditCard, Package, RefreshCcw, ShieldCheck, Star, Truck } from "lucide-react"
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  ArrowRight,
+  CreditCard,
+  Package,
+  RefreshCcw,
+  ShieldCheck,
+  Star,
+  Truck,
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
-import { ProductCard } from "@/components/ProductCard"
-import { formatCurrency } from "@/lib/utils"
-import api from "@/lib/api"
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ProductCard } from "@/components/ProductCard";
+import { formatCurrency } from "@/lib/utils";
+import api from "@/lib/api";
 
 const departments = [
-  { code: "ELC", name: "Electronics", to: "/categories/electronics" },
-  { code: "FSH", name: "Fashion", to: "/categories/fashion" },
-  { code: "HOM", name: "Home & Living", to: "/categories/home-living" },
-  { code: "SPT", name: "Sports & Outdoors", to: "/categories/sports-outdoors" },
-  { code: "BTY", name: "Beauty & Health", to: "/categories/beauty-health" },
-]
+  { code: "ELC", name: "គ្រឿងអេឡិចត្រូនិក", to: "/categories/electronics" },
+  { code: "FSH", name: "ម៉ូដសម្លៀកបំពាក់", to: "/categories/fashion" },
+  {
+    code: "HOM",
+    name: "សម្ភារៈក្នុងផ្ទះនិងក្រៅផ្ទះ",
+    to: "/categories/home-living",
+  },
+  { code: "SPT", name: "Sport", to: "/categories/sports-outdoors" },
+  { code: "BTY", name: "Skincare", to: "/categories/beauty-health" },
+];
 
 const trust = [
-  { icon: Truck, label: "Same-day dispatch" },
-  { icon: RefreshCcw, label: "7-day easy returns" },
-  { icon: ShieldCheck, label: "Secure checkout" },
+  { icon: Truck, label: "ការដឹកជញ្ជូនឆាប់រហ័ស" },
+  {
+    icon: RefreshCcw,
+    label: "ការប្តូរ ឬសងទំនិញវិញក្នុងរយៈពេល ៧ ថ្ងៃ",
+  },
+  { icon: ShieldCheck, label: "ការទូទាត់ប្រាក់មានសុវត្ថិភាព" },
   { icon: CreditCard, label: "Card · GCash · COD" },
-]
+];
 
 export function HomePage() {
-  const [featured, setFeatured] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [featured, setFeatured] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     api
       .get("/products", { params: { per_page: 8, sort: "rating" } })
       .then(({ data }) => setFeatured(data.data))
-      .finally(() => setLoading(false))
-  }, [])
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div>
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary to-emerald-500 text-primary-foreground">
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-50 dot-grid"
-        />
+        <div aria-hidden className="absolute inset-0 opacity-50 dot-grid" />
         <div
           aria-hidden
           className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-white/10 blur-3xl"
@@ -52,16 +64,16 @@ export function HomePage() {
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-14 lg:grid-cols-[1.05fr_1fr] lg:py-20">
           <div className="flex flex-col gap-6">
-            <p className="text-rail inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-3 py-1 font-bold backdrop-blur">
+            <p className="inline-flex w-fit items-center gap-2 rounded-full bg-white/15 px-3 py-1 font-semibold backdrop-blur">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-signal" />
-              NEW ARRIVALS WEEKLY
+              ទំនិញថ្មីៗប្រចាំសប្តាហ៍
             </p>
             <h1 className="font-display text-[2.6rem] font-bold leading-[1.02] tracking-tight sm:text-6xl lg:text-[4rem]">
-              Good stuff,
+              មានលក់ទំនិញ
               <br />
-              priced in{" "}
+              គ្រប់ប្រភេទ,{" "}
               <span className="relative inline-block">
-                <span className="relative z-10">plain pesos.</span>
+                <span className="relative z-10">ដឹកជញ្ជូនគ្រប់ខេត្ត ក្រុង</span>
                 <span
                   aria-hidden
                   className="absolute inset-x-0 bottom-1 z-0 h-4 -rotate-1 rounded-sm bg-signal/90"
@@ -69,18 +81,28 @@ export function HomePage() {
               </span>
             </h1>
             <p className="max-w-lg text-lg text-primary-foreground/90">
-              Electronics, fashion, home, and outdoor goods — tested, priced, and
-              out the door the same day you order.
+              គ្រឿងអេឡិចត្រូនិក ម៉ូដសម្លៀកបំពាក់ សម្ភារៈក្នុងផ្ទះនិងក្រៅផ្ទះ —
+              បានឆ្លងកាត់ការពិនិត្យ តម្លៃច្បាស់លាស់
+              និងដឹកជញ្ជូនចេញក្នុងថ្ងៃដែលអ្នកបញ្ជាទិញតែម្តង។
             </p>
 
             <div className="flex flex-wrap items-center gap-3">
-              <Button asChild size="lg" className="bg-card text-primary shadow-lg transition-shadow hover:shadow-[0_8px_30px_rgba(255,255,255,0.35)] hover:bg-card/90">
+              <Button
+                asChild
+                size="lg"
+                className="bg-card text-primary shadow-lg transition-shadow hover:shadow-[0_8px_30px_rgba(255,255,255,0.35)] hover:bg-card/90"
+              >
                 <Link to="/shop">
-                  Shop the catalog <ArrowRight />
+                  ទិញទំនិញ <ArrowRight />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-white/15 hover:text-primary-foreground">
-                <Link to="/deals">View deals</Link>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-white/15 hover:text-primary-foreground"
+              >
+                <Link to="/deals">មើលការបញ្ចុះតម្លៃ</Link>
               </Button>
             </div>
 
@@ -94,10 +116,10 @@ export function HomePage() {
                 <Package className="h-4 w-4 text-white/80" />
                 2,000+ orders shipped
               </span>
-              <span className="inline-flex items-center gap-1.5 text-sm font-semibold">
+              {/*<span className="inline-flex items-center gap-1.5 text-sm font-semibold">
                 <Truck className="h-4 w-4 text-white/80" />
-                Same-day packing
-              </span>
+                ការដឹកជញ្ជូនឆាប់រហ័ស
+              </span>*/}
             </div>
           </div>
 
@@ -119,14 +141,16 @@ export function HomePage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
 
                   {/* ribbon */}
-                  <span className="absolute left-0 top-5 rounded-r-full bg-card px-3 py-1.5 text-rail text-[10px] font-bold text-primary shadow-md">
-                    DEAL OF THE DAY
+                  <span className="absolute left-0 top-5 rounded-r-full bg-card px-3 py-1.5  text-[13px] font-bold text-primary shadow-md">
+                    ការផ្តល់ជូនពិសេសប្រចាំថ្ងៃ
                   </span>
 
                   {/* discount seal */}
                   {featured[0]?.has_discount && (
                     <div className="absolute right-4 top-4 flex h-20 w-20 -rotate-6 flex-col items-center justify-center rounded-full border-2 border-dashed border-white/70 bg-signal text-white shadow-xl motion-reduce:animate-none animate-float">
-                      <span className="text-ticket text-xl leading-none">−{featured[0].discount_percent}%</span>
+                      <span className="text-ticket text-xl leading-none">
+                        −{featured[0].discount_percent}%
+                      </span>
                       <span className="text-rail mt-0.5 text-[8px]">OFF</span>
                     </div>
                   )}
@@ -176,7 +200,9 @@ export function HomePage() {
                     )}
                   </div>
                   <div className="flex flex-1 flex-col gap-1.5 p-4">
-                    <p className="text-rail text-[9px] font-bold text-primary">TOP RATED</p>
+                    <p className="text-rail text-[9px] font-bold text-primary">
+                      TOP RATED
+                    </p>
                     <p className="truncate text-sm font-bold text-foreground">
                       {featured[1]?.name}
                     </p>
@@ -205,13 +231,15 @@ export function HomePage() {
                   className="absolute -right-6 -top-8 h-28 w-28 rounded-full bg-white/10"
                 />
                 <div className="relative">
-                  <p className="text-rail text-[9px] font-bold text-white/80">LIMITED DEALS</p>
+                  <p className=" text-[12px] font-bold text-white/80">
+                    ការផ្តល់ជូនពិសេស
+                  </p>
                   <p className="font-display mt-2 text-2xl font-bold leading-tight">
-                    Up to −30% off this week
+                    បញ្ចុះតម្លៃរហូតដល់ -៣០% ក្នុងសប្តាហ៍នេះ
                   </p>
                 </div>
                 <span className="relative mt-8 inline-flex items-center gap-1.5 text-sm font-bold">
-                  Visit the deals aisle
+                  ទំនិញបញ្ចុះតម្លៃ
                   <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </span>
               </Link>
@@ -223,7 +251,9 @@ export function HomePage() {
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary">
                   <Truck className="h-4 w-4" />
                 </span>
-                <span className="text-[11px] font-bold">Free ship over ₱1,500</span>
+                <span className="text-[11px] font-bold">
+                  ដឹកជញ្ជូនឥតគិតថ្លៃទិញចាប់ពី 100​USD ឡើងទៅ
+                </span>
               </div>
             </div>
           </div>
@@ -235,7 +265,10 @@ export function HomePage() {
       <section className="border-b border-border bg-card">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px lg:grid-cols-4">
           {trust.map((t) => (
-            <div key={t.label} className="flex items-center justify-center gap-2 px-4 py-3.5 text-sm font-semibold text-foreground">
+            <div
+              key={t.label}
+              className="flex items-center justify-center gap-2 px-4 py-3.5 text-sm font-semibold text-foreground"
+            >
               <t.icon className="h-4 w-4 shrink-0 text-primary" />
               {t.label}
             </div>
@@ -245,7 +278,9 @@ export function HomePage() {
 
       <section className="border-b border-border bg-background">
         <div className="mx-auto max-w-7xl px-4 py-10">
-          <p className="text-rail mb-1 text-[10px] font-bold text-primary">DEPARTMENTS</p>
+          <p className=" mb-3 text-[15px] font-bold text-primary">
+            ប្រភេទទំនិញ
+          </p>
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
             {departments.map((d, i) => (
               <Link
@@ -261,9 +296,12 @@ export function HomePage() {
                   {d.code}
                 </span>
                 <div>
-                  <span className="block text-sm font-bold text-foreground">{d.name}</span>
+                  <span className="block text-sm font-bold text-foreground">
+                    {d.name}
+                  </span>
                   <span className="text-rail mt-1 inline-flex items-center gap-1 text-[10px] text-primary">
-                    Shop now <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                    Shop now{" "}
+                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                   </span>
                 </div>
               </Link>
@@ -275,9 +313,11 @@ export function HomePage() {
       <section className="mx-auto max-w-7xl px-4 pb-20 pt-14">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-rail mb-1 text-[10px] font-bold text-primary">TOP / THIS WEEK</p>
+            <p className=" mb-1 text-[13px] font-bold text-primary">
+              ទំនិញពេញនិយម / ប្រចាំសប្តាហ៍នេះ
+            </p>
             <h2 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
-              The goods people keep returning for
+              ទំនិញដែលអតិថិជនមានតម្រូវការច្រើន
             </h2>
           </div>
           <Button asChild variant="outline">
@@ -302,5 +342,5 @@ export function HomePage() {
         )}
       </section>
     </div>
-  )
+  );
 }
