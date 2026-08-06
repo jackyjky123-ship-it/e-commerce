@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Nunito Sans", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-display: "Rubik", ui-sans-serif, system-ui, sans-serif;
+
+  /* E-commerce palette: success green + slate ink */
+  --color-background: #ecfdf5;
+  --color-foreground: #064e3b;
+  --color-card: #ffffff;
+  --color-card-foreground: #064e3b;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #064e3b;
+  --color-primary: #059669;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #e1f0ee;
+  --color-secondary-foreground: #064e3b;
+  --color-muted: #e8f1f3;
+  --color-muted-foreground: #3f5d54;
+  --color-accent: #d7f2e6;
+  --color-accent-foreground: #065f46;
+  --color-border: #a9e4c6;
+  --color-input: #a9e4c6;
+  --color-ring: #059669;
+
+  /* brand + signals */
+  --color-ink: #0b3428;
+  --color-paper: #ffffff;
+  --color-signal: #ea580c;
+  --color-tariff: #10b981;
+  --color-parcel: #059669;
+
+  /* semantics */
+  --color-destructive: #dc2626;
+  --color-destructive-foreground: #ffffff;
+  --color-success: #10b981;
+  --color-warning: #ea580c;
+  --color-info: #2563eb;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+}
+
+:root {
+  --radius: 0.75rem;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+
+@custom-variant dark (&:is(.dark *));
+
+/* Brand gradient tape — slim accent bar under hero bands. */
+.tape {
+  height: 0.375rem;
+  background: linear-gradient(90deg, #059669 0%, #10b981 55%, #ea580c 100%);
+}
+
+@keyframes float-y {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@utility animate-float {
+  animation: float-y 4s ease-in-out infinite;
+}
+
+@utility dot-grid {
+  background-image: radial-gradient(
+    circle,
+    rgb(255 255 255 / 0.28) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+@utility text-ticket {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+@utility text-rail {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
