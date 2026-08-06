@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { Link, NavLink, useNavigate } from "react-router-dom"
+import { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   ChevronDown,
   LayoutDashboard,
@@ -10,9 +10,9 @@ import {
   ShoppingBag,
   User as UserIcon,
   X,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,12 +20,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Input } from "@/components/ui/input"
-import { useAuthStore, isAdmin } from "@/stores/authStore"
-import { useCartStore } from "@/stores/cartStore"
-import { useCurrencyStore } from "@/stores/currencyStore"
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { useAuthStore, isAdmin } from "@/stores/authStore";
+import { useCartStore } from "@/stores/cartStore";
+import { useCurrencyStore } from "@/stores/currencyStore";
 
 const categories = [
   { code: "ELC", name: "Electronics", to: "/categories/electronics" },
@@ -33,44 +33,44 @@ const categories = [
   { code: "HOM", name: "Home & Living", to: "/categories/home-living" },
   { code: "SPT", name: "Sports & Outdoors", to: "/categories/sports-outdoors" },
   { code: "BTY", name: "Beauty & Health", to: "/categories/beauty-health" },
-]
+];
 
 const navLinks = [
   { to: "/shop", label: "Shop" },
   { to: "/deals", label: "Deals" },
   { to: "/about", label: "About" },
   { to: "/contact", label: "Contact" },
-]
+];
 
 export function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [search, setSearch] = useState("")
-  const navigate = useNavigate()
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
-  const { user, logout } = useAuthStore()
-  const cartCount = useCartStore((s) => s.count)
-  const currency = useCurrencyStore((s) => s.currency)
-  const setCurrency = useCurrencyStore((s) => s.setCurrency)
+  const { user, logout } = useAuthStore();
+  const cartCount = useCartStore((s) => s.count);
+  const currency = useCurrencyStore((s) => s.currency);
+  const setCurrency = useCurrencyStore((s) => s.setCurrency);
 
   const handleLogout = async () => {
-    await logout()
-    navigate("/")
-  }
+    await logout();
+    navigate("/");
+  };
 
   const handleSearch = (e) => {
-    e.preventDefault()
-    navigate(`/shop?search=${encodeURIComponent(search)}`)
-    setSearch("")
-    setSearchOpen(false)
-  }
+    e.preventDefault();
+    navigate(`/shop?search=${encodeURIComponent(search)}`);
+    setSearch("");
+    setSearchOpen(false);
+  };
 
   const initials = user?.name
     ?.split(" ")
     .map((n) => n[0])
     .slice(0, 2)
     .join("")
-    .toUpperCase()
+    .toUpperCase();
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur">
@@ -85,23 +85,32 @@ export function Navbar() {
           <Menu />
         </Button>
 
-        <Link to="/" className="group flex flex-col items-start leading-none" aria-label="ShopVerse home">
+        <Link
+          to="/"
+          className="group flex flex-col items-start leading-none"
+          aria-label="ShopVerse home"
+        >
           <span className="font-display text-xl font-bold tracking-tight text-foreground">
-            Shop<span className="text-primary">Verse</span>
+            <span className="text-primary">E-Commerce</span>
           </span>
           <span className="text-rail text-[10px] text-muted-foreground">
-            Everyday goods
+            Made in Cambodia
           </span>
         </Link>
 
-        <nav className="ml-4 hidden items-center gap-1 lg:flex" aria-label="Main">
+        <nav
+          className="ml-4 hidden items-center gap-1 lg:flex"
+          aria-label="Main"
+        >
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               className={({ isActive }) =>
                 `rounded-full px-4 py-2 text-[13px] font-semibold transition-colors ${
-                  isActive ? "bg-accent text-primary" : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
+                  isActive
+                    ? "bg-accent text-primary"
+                    : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
                 }`
               }
             >
@@ -120,13 +129,20 @@ export function Navbar() {
                 <ChevronDown className="ml-0.5 h-3.5 w-3.5 opacity-60" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-64 rounded-xl border p-1.5 shadow-lg">
+            <DropdownMenuContent
+              align="start"
+              className="w-64 rounded-xl border p-1.5 shadow-lg"
+            >
               <DropdownMenuItem asChild className="px-3 py-2 font-bold">
                 <Link to="/categories">All departments</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               {categories.map((c) => (
-                <DropdownMenuItem key={c.slug} asChild className="flex items-center gap-3 px-3 py-2">
+                <DropdownMenuItem
+                  key={c.slug}
+                  asChild
+                  className="flex items-center gap-3 px-3 py-2"
+                >
                   <Link to={`/categories/${c.slug}`}>
                     <span className="flex h-6 w-6 items-center justify-center rounded-full bg-muted font-mono text-[10px] font-bold text-primary">
                       {c.code}
@@ -151,7 +167,10 @@ export function Navbar() {
                 <ChevronDown className="ml-0.5 h-3.5 w-3.5 opacity-60" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-44 rounded-xl border p-1.5 shadow-lg">
+            <DropdownMenuContent
+              align="end"
+              className="w-44 rounded-xl border p-1.5 shadow-lg"
+            >
               <DropdownMenuItem
                 onClick={() => setCurrency("USD")}
                 className={`px-3 py-2 ${currency === "USD" ? "bg-accent font-bold text-primary" : ""}`}
@@ -176,7 +195,12 @@ export function Navbar() {
                 placeholder="Search the catalog…"
                 className="w-44 rounded-full sm:w-64"
               />
-              <Button type="submit" variant="ghost" size="icon" aria-label="Search">
+              <Button
+                type="submit"
+                variant="ghost"
+                size="icon"
+                aria-label="Search"
+              >
                 <Search />
               </Button>
             </form>
@@ -238,7 +262,10 @@ export function Navbar() {
                   </>
                 )}
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="text-destructive"
+                >
                   <LogOut /> Sign out
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -258,13 +285,21 @@ export function Navbar() {
 
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setMobileOpen(false)} />
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setMobileOpen(false)}
+          />
           <div className="absolute inset-y-0 left-0 flex w-80 flex-col bg-card shadow-xl">
             <div className="flex h-16 items-center justify-between border-b px-4">
               <span className="font-display text-lg font-bold tracking-tight text-foreground">
                 Shop<span className="text-primary">Verse</span>
               </span>
-              <Button variant="ghost" size="icon" onClick={() => setMobileOpen(false)} aria-label="Close menu">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMobileOpen(false)}
+                aria-label="Close menu"
+              >
                 <X />
               </Button>
             </div>
@@ -283,7 +318,9 @@ export function Navbar() {
                   onClick={() => setMobileOpen(false)}
                   className={({ isActive }) =>
                     `rounded-full px-4 py-2.5 text-sm font-semibold ${
-                      isActive ? "bg-accent text-primary" : "text-muted-foreground hover:bg-accent"
+                      isActive
+                        ? "bg-accent text-primary"
+                        : "text-muted-foreground hover:bg-accent"
                     }`
                   }
                 >
@@ -291,7 +328,9 @@ export function Navbar() {
                 </NavLink>
               ))}
 
-              <p className="text-rail mt-4 px-4 pb-1 text-[10px] font-bold text-primary">Departments</p>
+              <p className="text-rail mt-4 px-4 pb-1 text-[10px] font-bold text-primary">
+                Departments
+              </p>
               <div className="flex flex-col gap-1">
                 <NavLink
                   to="/categories"
@@ -334,5 +373,5 @@ export function Navbar() {
         </div>
       )}
     </header>
-  )
+  );
 }
