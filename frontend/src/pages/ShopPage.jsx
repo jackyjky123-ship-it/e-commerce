@@ -1,75 +1,75 @@
-import { useCallback, useEffect, useState } from "react"
-import { Link, useParams, useSearchParams } from "react-router-dom"
-import { Search, SlidersHorizontal, X } from "lucide-react"
+import { useCallback, useEffect, useState } from "react";
+import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Search, SlidersHorizontal, X } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select } from "@/components/ui/select"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { ProductCard } from "@/components/ProductCard"
-import { Pagination } from "@/components/Pagination"
-import { EmptyState } from "@/components/EmptyState"
-import { useDebounce } from "@/hooks/useDebounce"
-import api from "@/lib/api"
-import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { ProductCard } from "@/components/ProductCard";
+import { Pagination } from "@/components/Pagination";
+import { EmptyState } from "@/components/EmptyState";
+import { useDebounce } from "@/hooks/useDebounce";
+import api from "@/lib/api";
+import { cn } from "@/lib/utils";
 
 const PRICE_RANGES = [
   { label: "All prices", min: null, max: null },
-  { label: "Under â‚±1,000", min: null, max: 1000 },
-  { label: "â‚±1,000 â€“ â‚±2,500", min: 1000, max: 2500 },
-  { label: "â‚±2,500 â€“ â‚±5,000", min: 2500, max: 5000 },
-  { label: "Over â‚±5,000", min: 5000, max: null },
-]
+  { label: "Under 20$", min: null, max: 1000 },
+  { label: "20$ -50$", min: 1000, max: 2500 },
+  { label: "50$ -100$", min: 2500, max: 5000 },
+  { label: "Over 100$", min: 5000, max: null },
+];
 
 const CATEGORY_CODES = {
-  electronics: "ELC",
+  គ្រឿងអេឡិចត្រូនិក: "ELC",
   fashion: "FSH",
   "home-living": "HOM",
   "sports-outdoors": "SPT",
   "beauty-health": "BTY",
-}
+};
 
 export function ShopPage() {
-  const { slug } = useParams()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const { slug } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const initialSearch = searchParams.get("search") || ""
-  const initialSort = searchParams.get("sort") || "newest"
-  const initialRange = Number(searchParams.get("range")) || 0
-  const initialPage = Number(searchParams.get("page")) || 1
+  const initialSearch = searchParams.get("search") || "";
+  const initialSort = searchParams.get("sort") || "newest";
+  const initialRange = Number(searchParams.get("range")) || 0;
+  const initialPage = Number(searchParams.get("page")) || 1;
 
-  const [categories, setCategories] = useState([])
-  const [search, setSearch] = useState(initialSearch)
-  const [sort, setSort] = useState(initialSort)
-  const [range, setRange] = useState(initialRange)
-  const [page, setPage] = useState(initialPage)
-  const [products, setProducts] = useState([])
-  const [meta, setMeta] = useState({})
-  const [loading, setLoading] = useState(true)
+  const [categories, setCategories] = useState([]);
+  const [search, setSearch] = useState(initialSearch);
+  const [sort, setSort] = useState(initialSort);
+  const [range, setRange] = useState(initialRange);
+  const [page, setPage] = useState(initialPage);
+  const [products, setProducts] = useState([]);
+  const [meta, setMeta] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const debouncedSearch = useDebounce(search, 400)
+  const debouncedSearch = useDebounce(search, 400);
 
-  const categorySlug = slug || searchParams.get("category") || ""
+  const categorySlug = slug || searchParams.get("category") || "";
 
   const buildParams = useCallback(() => {
-    const params = new URLSearchParams()
-    if (debouncedSearch) params.set("search", debouncedSearch)
-    if (categorySlug) params.set("category", categorySlug)
-    if (sort !== "newest") params.set("sort", sort)
-    if (range > 0) params.set("range", String(range))
-    if (page > 1) params.set("page", String(page))
-    return params
-  }, [debouncedSearch, categorySlug, sort, range, page])
+    const params = new URLSearchParams();
+    if (debouncedSearch) params.set("search", debouncedSearch);
+    if (categorySlug) params.set("category", categorySlug);
+    if (sort !== "newest") params.set("sort", sort);
+    if (range > 0) params.set("range", String(range));
+    if (page > 1) params.set("page", String(page));
+    return params;
+  }, [debouncedSearch, categorySlug, sort, range, page]);
 
   useEffect(() => {
-    setSearchParams(buildParams(), { replace: true })
-  }, [buildParams, setSearchParams])
+    setSearchParams(buildParams(), { replace: true });
+  }, [buildParams, setSearchParams]);
 
   useEffect(() => {
-    setLoading(true)
-    const selected = PRICE_RANGES[range] || {}
+    setLoading(true);
+    const selected = PRICE_RANGES[range] || {};
     const params = {
       per_page: 12,
       category: categorySlug || undefined,
@@ -78,20 +78,17 @@ export function ShopPage() {
       min_price: selected.min,
       max_price: selected.max,
       page,
-    }
-    Promise.all([
-      api.get("/products", { params }),
-      api.get("/categories"),
-    ])
+    };
+    Promise.all([api.get("/products", { params }), api.get("/categories")])
       .then(([productsRes, categoriesRes]) => {
-        setProducts(productsRes.data.data)
-        setMeta(productsRes.data.meta)
-        setCategories(categoriesRes.data.data)
+        setProducts(productsRes.data.data);
+        setMeta(productsRes.data.meta);
+        setCategories(categoriesRes.data.data);
       })
-      .finally(() => setLoading(false))
-  }, [debouncedSearch, categorySlug, sort, range, page])
+      .finally(() => setLoading(false));
+  }, [debouncedSearch, categorySlug, sort, range, page]);
 
-  useEffect(() => setPage(1), [debouncedSearch, categorySlug, sort, range])
+  useEffect(() => setPage(1), [debouncedSearch, categorySlug, sort, range]);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -100,10 +97,15 @@ export function ShopPage() {
           {categorySlug ? "CATALOG / DEPARTMENT" : "CATALOG / ALL GOODS"}
         </p>
         <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
-          {categorySlug ? (categories.find((c) => c.slug === categorySlug)?.name || "Category") : "The whole catalog"}
+          {categorySlug
+            ? categories.find((c) => c.slug === categorySlug)?.name ||
+              "Category"
+            : "The whole catalog"}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          {loading ? "Counting stock…" : `${meta.total || 0} items on the shelves`}
+          {loading
+            ? "Counting stock…"
+            : `${meta.total || 0} items on the shelves`}
         </p>
       </div>
 
@@ -111,18 +113,22 @@ export function ShopPage() {
         {/* Filters */}
         <aside className="space-y-6">
           <div>
-            <h3 className="text-rail mb-3 text-[10px] font-bold text-muted-foreground">Department</h3>
+            <h3 className="text-rail mb-3 text-[10px] font-bold text-muted-foreground">
+              Department
+            </h3>
             <div className="space-y-1">
               <Link
                 to="/shop"
                 className={cn(
                   "flex w-full items-center justify-between rounded-full px-3 py-2 text-sm transition-colors",
-                  !categorySlug ? "bg-primary font-semibold text-primary-foreground" : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                  !categorySlug
+                    ? "bg-primary font-semibold text-primary-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground",
                 )}
               >
                 <span>
                   <span className="mr-2 text-[10px] opacity-60">ALL</span>
-                  All Departments
+                  គ្រប់ផ្នែកទាំងអស់
                 </span>
                 <span className="text-ticket text-xs opacity-80">
                   {categories.reduce((sum, c) => sum + c.products_count, 0)}
@@ -136,7 +142,7 @@ export function ShopPage() {
                     "flex w-full items-center justify-between rounded-full px-3 py-2 text-sm transition-colors",
                     categorySlug === c.slug
                       ? "bg-primary font-semibold text-primary-foreground"
-                      : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                      : "text-muted-foreground hover:bg-accent hover:text-foreground",
                   )}
                 >
                   <span>
@@ -145,7 +151,9 @@ export function ShopPage() {
                     </span>
                     {c.name}
                   </span>
-                  <span className="text-ticket text-xs opacity-80">{c.products_count}</span>
+                  <span className="text-ticket text-xs opacity-80">
+                    {c.products_count}
+                  </span>
                 </Link>
               ))}
             </div>
@@ -154,7 +162,9 @@ export function ShopPage() {
           <Separator />
 
           <div>
-            <h3 className="text-rail mb-3 text-[10px] font-bold text-muted-foreground">Price range</h3>
+            <h3 className="text-rail mb-3 text-[10px] font-bold text-muted-foreground">
+              Price range
+            </h3>
             <div className="space-y-1">
               {PRICE_RANGES.map((option, i) => (
                 <button
@@ -162,10 +172,17 @@ export function ShopPage() {
                   onClick={() => setRange(i)}
                   className={cn(
                     "flex w-full items-center gap-2 rounded-full px-3 py-1.5 text-left text-sm transition-colors cursor-pointer",
-                    range === i ? "bg-accent font-semibold text-primary" : "hover:bg-accent/60 text-muted-foreground"
+                    range === i
+                      ? "bg-accent font-semibold text-primary"
+                      : "hover:bg-accent/60 text-muted-foreground",
                   )}
                 >
-                  <span className={cn("h-3.5 w-3.5 rounded-full border", range === i && "border-primary bg-primary")} />
+                  <span
+                    className={cn(
+                      "h-3.5 w-3.5 rounded-full border",
+                      range === i && "border-primary bg-primary",
+                    )}
+                  />
                   {option.label}
                 </button>
               ))}
@@ -187,7 +204,11 @@ export function ShopPage() {
             </div>
             <div className="flex items-center gap-2">
               <SlidersHorizontal className="h-4 w-4 text-muted-foreground sm:hidden" />
-              <Select value={sort} onChange={(e) => setSort(e.target.value)} className="sm:w-52">
+              <Select
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+                className="sm:w-52"
+              >
                 <option value="newest">Sort by: Newest</option>
                 <option value="price_asc">Price: Low to High</option>
                 <option value="price_desc">Price: High to Low</option>
@@ -201,13 +222,19 @@ export function ShopPage() {
               {debouncedSearch && (
                 <Badge variant="secondary" className="gap-1 py-1">
                   Search: {debouncedSearch}
-                  <X className="h-3 w-3 cursor-pointer" onClick={() => setSearch("")} />
+                  <X
+                    className="h-3 w-3 cursor-pointer"
+                    onClick={() => setSearch("")}
+                  />
                 </Badge>
               )}
               {range !== 0 && (
                 <Badge variant="secondary" className="gap-1 py-1">
                   {PRICE_RANGES[range].label}
-                  <X className="h-3 w-3 cursor-pointer" onClick={() => setRange(0)} />
+                  <X
+                    className="h-3 w-3 cursor-pointer"
+                    onClick={() => setRange(0)}
+                  />
                 </Badge>
               )}
             </div>
@@ -228,9 +255,9 @@ export function ShopPage() {
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    setSearch("")
-                    setRange(0)
-                    setSort("newest")
+                    setSearch("");
+                    setRange(0);
+                    setSort("newest");
                   }}
                 >
                   Clear filters
@@ -245,12 +272,16 @@ export function ShopPage() {
                 ))}
               </div>
               <div className="mt-10">
-                <Pagination page={page} lastPage={meta.last_page} onChange={setPage} />
+                <Pagination
+                  page={page}
+                  lastPage={meta.last_page}
+                  onChange={setPage}
+                />
               </div>
             </>
           )}
         </div>
       </div>
     </div>
-  )
+  );
 }

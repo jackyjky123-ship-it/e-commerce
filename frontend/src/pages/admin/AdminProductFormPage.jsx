@@ -45,7 +45,7 @@ export function AdminProductFormPage() {
   const [productId, setProductId] = useState(null)
 
   useEffect(() => {
-    api.get("/categories").then(({ data }) => setCategories(data.data))
+    api.get("/admin/categories").then(({ data }) => setCategories(data.data))
 
     if (isEdit) {
       api

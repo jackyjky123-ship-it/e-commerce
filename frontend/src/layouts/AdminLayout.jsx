@@ -5,6 +5,7 @@ import {
   Package,
   ShoppingBag,
   Store,
+  Tags,
   Users,
 } from "lucide-react"
 
@@ -17,6 +18,7 @@ import { cn } from "@/lib/utils"
 const navItems = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, end: true },
   { to: "/admin/products", label: "Products", icon: ShoppingBag },
+  { to: "/admin/categories", label: "Categories", icon: Tags },
   { to: "/admin/orders", label: "Orders", icon: Package },
   { to: "/admin/users", label: "Users", icon: Users },
 ]

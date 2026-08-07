@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
-import { ArrowRight } from "lucide-react"
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Skeleton } from "@/components/ui/skeleton"
-import api from "@/lib/api"
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import api from "@/lib/api";
 
 const CODES = {
   electronics: "ELC",
@@ -12,25 +12,27 @@ const CODES = {
   "home-living": "HOM",
   "sports-outdoors": "SPT",
   "beauty-health": "BTY",
-}
+};
 
 export function CategoriesPage() {
-  const [categories, setCategories] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     api
       .get("/categories")
       .then(({ data }) => setCategories(data.data))
-      .finally(() => setLoading(false))
-  }, [])
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10">
-      <p className="text-rail mb-1 text-[10px] font-bold text-primary">SHOP BY DEPARTMENT</p>
-      <h1 className="font-display text-4xl font-bold tracking-tight">Departments</h1>
+      <p className=" mb-1 text-[15px] font-bold text-primary">ទិញតាមផ្នែក</p>
+      <h1 className="font-display text-4xl font-bold tracking-tight">
+        ផ្នែកនានា
+      </h1>
       <p className="mt-2 max-w-xl text-muted-foreground">
-        Five departments, each one stocked and ready. Pick one and the shelf is yours.
+        សូមជ្រើសរើសយកប្រភេទទំនិញ ។
       </p>
 
       {loading ? (
@@ -55,23 +57,29 @@ export function CategoriesPage() {
                   {c.products_count} {c.products_count === 1 ? "item" : "items"}
                 </span>
               </div>
-              <h2 className="font-display mt-4 text-2xl font-bold tracking-tight">{c.name}</h2>
-              <p className="mt-1 text-sm text-muted-foreground">{c.description}</p>
+              <h2 className="font-sans mt-4 text-2xl font-bold tracking-tight">
+                {c.name}
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {c.description}
+              </p>
               <span className="text-rail mt-5 inline-flex items-center gap-1 text-[10px] font-bold text-primary transition-transform group-hover:translate-x-0.5">
                 SHOP NOW <ArrowRight className="h-3 w-3" />
               </span>
             </Link>
           ))}
           <div className="flex flex-col justify-center rounded-2xl border-2 border-dashed border-border bg-transparent p-6">
-            <h2 className="font-display text-xl font-bold tracking-tight">Or just walk the whole store.</h2>
+            <h2 className="font-display text-xl font-bold tracking-tight">
+              មើលទំនិញទាំងអស់
+            </h2>
             <Button asChild className="mt-4 w-fit">
               <Link to="/shop">
-                Browse all <ArrowRight />
+                មើលទាំងអស់ <ArrowRight />
               </Link>
             </Button>
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

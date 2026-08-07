@@ -22,6 +22,7 @@ import { RegisterPage } from "@/pages/RegisterPage"
 import { AdminDashboardPage } from "@/pages/admin/AdminDashboardPage"
 import { AdminProductsPage } from "@/pages/admin/AdminProductsPage"
 import { AdminProductFormPage } from "@/pages/admin/AdminProductFormPage"
+import { AdminCategoriesPage } from "@/pages/admin/AdminCategoriesPage"
 import { AdminOrdersPage } from "@/pages/admin/AdminOrdersPage"
 import { AdminUsersPage } from "@/pages/admin/AdminUsersPage"
 
@@ -121,6 +122,7 @@ export default function App() {
           <Route path="products" element={<AdminProductsPage />} />
           <Route path="products/new" element={<AdminProductFormPage />} />
           <Route path="products/:id/edit" element={<AdminProductFormPage />} />
+          <Route path="categories" element={<AdminCategoriesPage />} />
           <Route path="orders" element={<AdminOrdersPage />} />
           <Route path="users" element={<AdminUsersPage />} />
         </Route>
