@@ -28,14 +28,19 @@ import { useCartStore } from "@/stores/cartStore";
 import { useCurrencyStore } from "@/stores/currencyStore";
 
 const categories = [
-  { code: "ELC", name: "Electronics", to: "/categories/electronics" },
-  { code: "FSH", name: "Fashion", to: "/categories/fashion" },
-  { code: "HOM", name: "Home & Living", to: "/categories/home-living" },
-  { code: "SPT", name: "Sports & Outdoors", to: "/categories/sports-outdoors" },
-  { code: "BTY", name: "Beauty & Health", to: "/categories/beauty-health" },
+  { code: "ELC", name: "គ្រឿងអេឡិចត្រូនិក", to: "/categories/electronics" },
+  { code: "FSH", name: "ម៉ូដសម្លៀកបំពាក់", to: "/categories/fashion" },
+  {
+    code: "HOM",
+    name: "សម្ភារៈក្នុងផ្ទះនិងក្រៅផ្ទះ",
+    to: "/categories/home-living",
+  },
+  { code: "SPT", name: "Sports", to: "/categories/sports" },
+  { code: "BTY", name: "Skincares", to: "/categories/skincare" },
 ];
 
 const navLinks = [
+  { to: "/", label: "Home" },
   { to: "/shop", label: "Shop" },
   { to: "/deals", label: "Deals" },
   { to: "/about", label: "About" },
@@ -91,10 +96,10 @@ export function Navbar() {
           aria-label="ShopVerse home"
         >
           <span className="font-display text-xl font-bold tracking-tight text-foreground">
-            <span className="text-primary">E-Commerce</span>
+            CAM<span className="text-primary">Store</span>
           </span>
           <span className="text-rail text-[10px] text-muted-foreground">
-            Made in Cambodia
+            e-commerce Cambodia
           </span>
         </Link>
 
